@@ -53,7 +53,8 @@ int main()
 		printf(" Insert First  = f           Delete First  = t\n");
 		printf(" Invert List   = r           Quit          = q\n");
 		printf("----------------------------------------------------------------\n");
-
+		printf("----------- [ 김 윤 희 ] ------------ [ 2018038014 ] -----------\n");
+		printf("----------------------------------------------------------------\n");
 		printf("Command = ");
 		scanf(" %c", &command);
 
@@ -154,8 +155,6 @@ int insertFirst(headNode* h, int key) {
 /* 리스트를 검색하여, 입력받은 key보다 큰값이 나오는 노드 바로 앞에 삽입 */
 int insertNode(headNode* h, int key) {
 
-	listNode* prenode = (listNode*)malloc(sizeof(listNode));
-
 	listNode* newnode;
 	newnode = (listNode*)malloc(sizeof(listNode));       		// 사용자로부터 입력받은 값을 임시로 저장할 노드
 
@@ -172,13 +171,13 @@ int insertNode(headNode* h, int key) {
 	else if (h->first != NULL)   // first가 NULL이 아닐때
 	{
 		findnode = h->first;								  // findnode의 주소값을 frist로 가르킨다.
-		while (findnode->link != NULL && findnode->link->key < key)
+		while (findnode->link != NULL && findnode->link->key < key)	// 사용자로부터 입력 받은 값보다 작거나 널 값을 가지기 전까지
 		{
-			findnode = findnode->link;
+			findnode = findnode->link;						// 다음 리스트로 넘어간다.
 		}
-		prenode = newnode;
-		prenode->link = findnode->link;
-		findnode->link = prenode;
+		
+		newnode->link = findnode->link;						// newnode.link가 findnode.link를 가르킨다
+		findnode->link = newnode;							// findnode.link가 가르키는 주소를 newnode리스트로 변경한다.
 	}
 
 		return 0;
@@ -236,10 +235,10 @@ int deleteNode(headNode* h, int key) {
 	}
 	else if (h->first->key == key) // key값이 첫 노드 일 경우
 	{
-		listNode* removenode1 = (listNode*)malloc(sizeof(listNode));
-		removenode1 = h->first;			
-		h->first = removenode1->link;
-		free(removenode1);
+		listNode* removenode1 = (listNode*)malloc(sizeof(listNode));				// 동적할당 
+		removenode1 = h->first;														// 노드가 헤드를 가르킨다.
+		h->first = removenode1->link;												// 헤드가 removenode1.link가 가르키는 리스트를 가르킨다.
+		free(removenode1);															// 메모리 할당 해제
 		return 0;
 	}
 	else {
@@ -247,10 +246,11 @@ int deleteNode(headNode* h, int key) {
 		remove = h->first->link;
 		while (remove->link != NULL&&remove->link->key == key)	// remove ->link 가 널이 아닐때까지, 사용자가 찾는 값 까지 탐색
 		{
-			prenode = remove;
-			remove = remove->link;		// 다음 리스트를 찾는다.
+			prenode = remove;				// removenode의 주소를 prenode에 저장
+			remove = remove->link;			// 다음 리스트를 찾는다.
 		}
-		prenode->link = NULL;				//pre가 가르키고 있는 링크를 NULL로만든다.
+		
+		prenode->link = remove;				//prenode의 링크가 노드 remove를 가르킨다.
 	}
 	
 	return 0;
@@ -300,13 +300,12 @@ int invertList(headNode* h) {
 	listNode* r;			
 	p = h->first;			// 포인터 p를 첫 번째 노드에 설정
 	q = NULL;				// 초기화
-	r = NULL;				// 초기화
 
 	while (p != NULL) {		// 리스트의첫 번째 노드부터 링크를 따라 다음 노드로 이동하면서 노드간 연결을 바꾼다.
-		p = h->first;
-		q = p;
-		p = p->link;
-		q->link = r;
+		r = q;				// 초기화
+		q = p;				// q에 p노드의 정보를 저장
+		p = p->link;		// 다음 노드를 찾는다.
+		q->link = r;		// r을 다음 노드로 지정한다.
 	}
 	h->first = q;
 	return 0;
