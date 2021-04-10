@@ -171,12 +171,12 @@ int insertNode(headNode* h, int key) {
 	}
 	else if (h->first != NULL)   // first가 NULL이 아닐때
 	{
-		findnode->link = h->first;                        // findnode의 주소값을 frist로 가르킨다.
-		prenode = h->first;
+		findnode->link = h->first;								  // findnode의 주소값을 frist로 가르킨다.
+		
 
-		while (findnode != NULL) {                      // findnode가 연결리스트를 탐색 했을 때 NULL 나올때 까지 반복
-			prenode = findnode;
-			if (findnode->link == NULL) {            // findnode의 link가 null 까지 탐색
+		while (findnode != NULL) {								   // findnode가 연결리스트를 탐색 했을 때 NULL 나올때 까지 반복
+			
+			if (findnode->link == NULL) {							// findnode의 link가 null 까지 탐색
 				
 				if (newnode->key < findnode->key)
 				{
@@ -192,13 +192,13 @@ int insertNode(headNode* h, int key) {
 			}
 			else
 			{
-				prenode = findnode->link;
+				
 				findnode = findnode->link;
 			}
 
 		}
 
-
+								
 	}
 
 
@@ -242,10 +242,30 @@ int deleteNode(headNode* h, int key) {
  */
 int deleteLast(headNode* h) {
 	listNode* removenode = (listNode*)malloc(sizeof(listNode));
+	listNode* prenode = (listNode*)malloc(sizeof(listNode));
 	
 	if (h->first == NULL)
 		return;						// 공백 리스트인 경우, 삭제 중단
+	if (h->first->link == NULL)		// 리스트에 노드가 한개인 경우
+	{
+		free(h->first);				// 첫번째 노드 메모리 해제
+		h->first = NULL;			// 리스트 시작 포인터를 null로 설정한다.
+		return;
+	}
+	else                           // 리스트에 노드가 여려개 있는 경우
+	{
+		prenode = h->first;					//이전 노드가 first를 가르킨다.
+		removenode = h->first->link;		//제거 노드가 first의 link를 가르킨다.
+		while (removenode->link != NULL)		// 가르키는 링크가 NULL값이면
+		{
+			prenode = removenode;				// removenode의 주소를 prenode에 저장
+			removenode = removenode->link;		// 다음 리스트를 찾는다.
+		}
+		free(removenode);					//메모리 해제
+		prenode->link = NULL;				//pre가 가르키고 있는 링크를 NULL로만든다.
+
 	
+	}
 
 
 	return 0;
@@ -256,7 +276,20 @@ int deleteLast(headNode* h) {
  * 리스트의 링크를 역순으로 재 배치
  */
 int invertList(headNode* h) {
+	listNode* p;
+	listNode* q;
+	listNode* r;			
+	p = h->first;			// 포인터 p를 첫 번째 노드에 설정
+	q = NULL;				// 초기화
+	r = NULL;				// 초기화
 
+	while (p != NULL) {		// 리스트의첫 번째 노드부터 링크를 따라 다음 노드로 이동하면서 노드간 연결을 바꾼다.
+		p = h->first;
+		q = p;
+		p = p->link;
+		q->link = r;
+	}
+	h->first = q;
 	return 0;
 }
 
