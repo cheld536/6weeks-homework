@@ -17,8 +17,8 @@ typedef struct Node {
 	struct Node* link;						//다음 노드를 가르키는 링크
 } listNode;
 
-typedef struct Head {
-	struct Node* first;						// 헤더 노드
+typedef struct Head {						// 헤더 노드
+	struct Node* first;						
 }headNode;
 
 
@@ -162,7 +162,7 @@ int insertNode(headNode* h, int key) {
 	findnode = (listNode*)malloc(sizeof(listNode)); 				// 삽입 위치를 지정하는 포인터 노드
 
 	newnode->key = key;											// 사용자로부터 입력받은 값을 노드에 임시로 저장
-	
+
 
 	if (h->first == NULL) // frist가 NULL일때 first 가 새로운 노드를 가르키게 한다.
 	{
@@ -175,13 +175,13 @@ int insertNode(headNode* h, int key) {
 		{
 			findnode = findnode->link;						// 다음 리스트로 넘어간다.
 		}
-		
+
 		newnode->link = findnode->link;						// newnode.link가 findnode.link를 가르킨다
 		findnode->link = newnode;							// findnode.link가 가르키는 주소를 newnode리스트로 변경한다.
 	}
 
-		return 0;
-	}
+	return 0;
+}
 
 
 
@@ -191,8 +191,8 @@ int insertNode(headNode* h, int key) {
 int insertLast(headNode* h, int key) {
 	listNode* newNode = (listNode*)malloc(sizeof(listNode));		//삽입할 노드를 동적할당한다.
 	listNode* lastNode;												//리스트에 노드가 존재하는 경우 마지막노드 정보를 담는다.
-	newNode->key = key;												
-	
+	newNode->key = key;
+
 	if (h->first == NULL)		// 현재 리스트가 공백일때
 	{
 		h->first = newNode;		// first를 newNode로 저장
@@ -225,10 +225,10 @@ int deleteFirst(headNode* h) {
  * list에서 key에 대한 노드 삭제
  */
 int deleteNode(headNode* h, int key) {
-	
+
 	listNode* prenode;
 	listNode* remove;
-	
+
 	if (h->first == NULL)
 	{
 		return 0;
@@ -244,15 +244,15 @@ int deleteNode(headNode* h, int key) {
 	else {
 		prenode = h->first;
 		remove = h->first->link;
-		while (remove->link != NULL&&remove->link->key == key)	// remove ->link 가 널이 아닐때까지, 사용자가 찾는 값 까지 탐색
+		while (remove->link != NULL && remove->link->key == key)						// remove ->link 가 널이 아닐때까지, 사용자가 찾는 값 까지 탐색
 		{
-			prenode = remove;				// removenode의 주소를 prenode에 저장
-			remove = remove->link;			// 다음 리스트를 찾는다.
+			prenode = remove;														// removenode의 주소를 prenode에 저장
+			remove = remove->link;													// 다음 리스트를 찾는다.
 		}
-		
-		prenode->link = remove;				//prenode의 링크가 노드 remove를 가르킨다.
+
+		prenode->link = remove->link;												// 삭제하고 중간 값을 삭제하고  노드를 이어준다.
 	}
-	
+
 	return 0;
 
 }
@@ -263,7 +263,7 @@ int deleteNode(headNode* h, int key) {
 int deleteLast(headNode* h) {
 	listNode* removenode;			// 삭제할 노드를 담을 포인터
 	listNode* prenode;				// 삭제하기전 노드의 정보를 저장하는 포인터
-	
+
 	if (h->first == NULL)
 		return 0;						// 공백 리스트인 경우, 삭제 중단
 	if (h->first->link == NULL)		// 리스트에 노드가 한개인 경우
@@ -283,7 +283,7 @@ int deleteLast(headNode* h) {
 		}
 		prenode->link = NULL;				//pre가 가르키고 있는 링크를 NULL로만든다.
 
-	
+
 	}
 
 
@@ -297,7 +297,7 @@ int deleteLast(headNode* h) {
 int invertList(headNode* h) {
 	listNode* p;
 	listNode* q;
-	listNode* r;			
+	listNode* r;
 	p = h->first;			// 포인터 p를 첫 번째 노드에 설정
 	q = NULL;				// 초기화
 
@@ -311,7 +311,7 @@ int invertList(headNode* h) {
 	return 0;
 }
 
-
+/*리스트를 출력*/
 void printList(headNode* h) {
 	int i = 0;
 	listNode* p;
